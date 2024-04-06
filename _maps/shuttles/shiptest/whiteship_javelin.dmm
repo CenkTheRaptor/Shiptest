@@ -21,7 +21,7 @@
 "cF" = (/obj/machinery/door/airlock/external/glass,/obj/effect/mapping_helpers/airlock/cyclelink_helper,/turf/open/floor/plating,/area/ship/hallway/starboard)
 "cM" = (/turf/open/floor/plasteel/dark,/area/ship/hallway/port)
 "cQ" = (/obj/machinery/smartfridge/bloodbank,/turf/open/floor/plasteel,/area/ship/medical)
-"cX" = (/obj/machinery/power/apc/auto_name/directional/east,/turf/open/floor/plasteel/dark,/area/ship/storage)
+"cX" = (/obj/machinery/power/apc/auto_name/directional/east,/obj/structure/cable/yellow,/turf/open/floor/plasteel/dark,/area/ship/storage)
 "dp" = (/obj/effect/turf_decal/box/white/corners,/obj/structure/cable/yellow{icon_state = "4-8"},/turf/open/floor/plasteel/dark,/area/ship/security)
 "dr" = (/obj/effect/decal/cleanable/dirt/dust,/obj/structure/showcase/machinery/signal_decrypter,/turf/open/floor/circuit/off,/area/ship/science/ai_chamber)
 "ds" = (/obj/structure/cable/yellow{icon_state = "1-2"},/obj/machinery/atmospherics/pipe/manifold/cyan/hidden/layer2,/turf/open/floor/plasteel,/area/ship/engineering/electrical)
@@ -67,11 +67,10 @@
 "jj" = (/obj/effect/decal/cleanable/dirt/dust,/obj/item/wallframe/apc{pixel_y = -9; pixel_x = -10},/obj/structure/cable/yellow{icon_state = "0-2"},/obj/machinery/light/dim/directional/north,/turf/open/floor/circuit/off,/area/ship/science/ai_chamber)
 "jl" = (/obj/structure/cable/yellow{icon_state = "4-8"},/turf/open/floor/plasteel/dark,/area/ship/security/armory)
 "jr" = (/obj/effect/turf_decal/industrial/outline,/obj/structure/closet/firecloset,/turf/open/floor/plasteel/mono,/area/ship/cargo)
-"jt" = (/obj/effect/turf_decal/corner/transparent/neutral/diagonal{color = "#D4D4D4"},/obj/effect/turf_decal/corner/transparent/neutral/diagonal{color = "#D4D4D4"; dir = 4},/obj/structure/cable/yellow,/turf/open/floor/plasteel/dark,/area/ship/bridge)
 "jx" = (/obj/structure/cable/yellow{icon_state = "4-8"},/obj/machinery/door/airlock/external/glass{dir = 4},/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 4},/turf/open/floor/plasteel/dark,/area/ship/storage/eva)
 "jz" = (/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 1},/turf/closed/wall/mineral/titanium/nodiagonal,/area/ship/hallway/port)
 "jF" = (/obj/structure/chair/sofa{dir = 1},/turf/open/floor/wood,/area/ship/crew/cryo)
-"jI" = (/obj/effect/turf_decal/corner/transparent/neutral/diagonal{color = "#D4D4D4"},/obj/effect/turf_decal/corner/transparent/neutral/diagonal{color = "#D4D4D4"; dir = 4},/obj/machinery/holopad,/obj/machinery/power/apc/auto_name/directional/west,/turf/open/floor/plasteel/dark,/area/ship/bridge)
+"jI" = (/obj/effect/turf_decal/corner/transparent/neutral/diagonal{color = "#D4D4D4"},/obj/effect/turf_decal/corner/transparent/neutral/diagonal{color = "#D4D4D4"; dir = 4},/obj/machinery/holopad,/obj/machinery/power/apc/auto_name/directional/west,/obj/structure/cable/yellow,/turf/open/floor/plasteel/dark,/area/ship/bridge)
 "jK" = (/obj/machinery/portable_atmospherics/canister/air,/turf/open/floor/plasteel/dark,/area/ship/engineering/electrical)
 "jP" = (/obj/structure/closet/crate/freezer,/obj/item/reagent_containers/blood/lizard,/obj/item/reagent_containers/blood/OPlus,/obj/item/reagent_containers/blood/OMinus,/obj/item/reagent_containers/blood/universal,/obj/effect/turf_decal/industrial/outline/yellow,/turf/open/floor/plasteel,/area/ship/medical)
 "jS" = (/obj/effect/turf_decal/box/white/corners,/turf/open/floor/plasteel/dark,/area/ship/cargo)
@@ -111,7 +110,6 @@
 "pI" = (/obj/machinery/light/small/directional/south,/turf/open/floor/plasteel/dark,/area/ship/hallway/port)
 "pN" = (/obj/structure/table/greyscale,/obj/item/reagent_containers/food/condiment/saltshaker{pixel_y = 5; pixel_x = -12},/obj/item/reagent_containers/food/condiment/peppermill{pixel_y = -1; pixel_x = -12},/turf/open/floor/plasteel,/area/ship/crew/canteen)
 "qn" = (/turf/closed/wall/mineral/titanium/nodiagonal,/area/ship/security)
-"qp" = (/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 1},/turf/open/floor/plating,/area/ship/hallway/port)
 "qv" = (/obj/machinery/light/small/directional/west,/turf/open/floor/plating,/area/ship/hallway/port)
 "qw" = (/obj/effect/turf_decal/corner/transparent/neutral/diagonal{color = "#D4D4D4"},/obj/effect/turf_decal/corner/transparent/neutral/diagonal{color = "#D4D4D4"; dir = 4},/turf/open/floor/plasteel/dark,/area/ship/bridge)
 "qz" = (/obj/structure/cable/yellow{icon_state = "0-8"},/obj/machinery/power/apc/auto_name/directional/south,/turf/open/floor/plasteel/dark,/area/ship/security/armory)
@@ -187,7 +185,6 @@
 "AD" = (/obj/machinery/space_heater,/obj/machinery/light/small/directional/south,/turf/open/floor/plating,/area/ship/engineering/electrical)
 "AP" = (/obj/structure/cable/yellow{icon_state = "1-2"},/obj/structure/table/greyscale,/turf/open/floor/plasteel,/area/ship/hallway/central)
 "AV" = (/obj/machinery/door/airlock/glass{dir = 4},/turf/open/floor/plasteel/dark,/area/ship/crew/canteen)
-"Bp" = (/obj/structure/cable/yellow,/turf/open/floor/plasteel/dark,/area/ship/storage)
 "Br" = (/obj/effect/turf_decal/box/white/corners,/obj/machinery/conveyor/inverted{dir = 10},/turf/open/floor/plasteel/dark,/area/ship/cargo)
 "Bv" = (/obj/structure/cable/yellow{icon_state = "4-8"},/obj/machinery/door/airlock/external/glass{dir = 4},/obj/effect/mapping_helpers/airlock/cyclelink_helper{dir = 8},/turf/open/floor/plasteel/dark,/area/ship/storage/eva)
 "BC" = (/obj/machinery/computer/operating{dir = 1},/turf/open/floor/plasteel,/area/ship/medical)
@@ -241,7 +238,7 @@
 "IW" = (/obj/machinery/computer/atmos_alert{dir = 8},/turf/open/floor/plasteel,/area/ship/engineering/electrical)
 "IY" = (/obj/structure/table/greyscale,/obj/item/flashlight/lamp{pixel_y = 6},/turf/open/floor/plasteel/dark,/area/ship/security)
 "Jg" = (/obj/structure/closet/radiation,/turf/open/floor/plating,/area/ship/engineering/electrical)
-"Jt" = (/obj/structure/closet/secure_closet/contraband/armory,/turf/open/floor/plasteel/dark,/area/ship/security/armory)
+"Jt" = (/obj/structure/closet/secure_closet/contraband/armory,/obj/effect/spawner/lootdrop/armory_contraband,/obj/effect/spawner/lootdrop/armory_contraband,/obj/effect/spawner/lootdrop/armory_contraband,/turf/open/floor/plasteel/dark,/area/ship/security/armory)
 "Jv" = (/obj/structure/closet/crate/medical,/obj/machinery/light/directional/west,/turf/open/floor/plasteel/dark,/area/ship/cargo)
 "JH" = (/obj/structure/reagent_dispensers/fueltank,/turf/open/floor/plasteel/dark,/area/ship/storage/eva)
 "JK" = (/obj/structure/crate_shelf,/obj/machinery/light/directional/west,/turf/open/floor/plasteel/dark,/area/ship/cargo)
@@ -357,8 +354,8 @@ hhhhhhhhhhWmdEGuJgojlkMAMAMANASfyfyfyfyfyfjrNAcMpExwpEGFtQGFKqKqPjKqNfKqKqKqKqKq
 hhhhhhhhhhtSihGuvgzbqMTSHQOfGsVPaqVPVPVPVPVPtYQsQsQsQsQsQsQsQsQsAsJQAsQsQsQsQsAsQsKBMiMiMibWcbOKOKOKbMfDfDECEp
 hhhhhhhhhhWmdEGuADqQlkTSUKIWNASIKAfyRfHsOQSINApIFpcMVGVGVGVGVGUAykiTyksMpEpEFgcepEpETMcMMupEOKlalaFuFqfDfDtaFq
 hhhhACZwZwlklklklklklkDYdsDYNANAIhyfRfyfcwNANAVGxqVGVGXJOukQVGnnRDnswknsnsZlKziIbIpEpEuRjzpEzTlRjFtbFqtaCtFqrH
-hhACZwkNjjdrXMMxEKjKNgttSqWIWaNAJKDlRfyfKvNASParLpteVGNjNjNjVGsUTQnsfFMqlynaKziIQCpEpEqppEpEFqEpEpEpFqEpFqrHon
-hhZweIUCdMdMprZwlklkIBUJDUgBSoaQyfjSRfXKcwaQaIaILpLpkGNjwFgRVGhyBpnsjtaEsWnaKzMoPHonpExwpEonononononononononon
+hhACZwkNjjdrXMMxEKjKNgttSqWIWaNAJKDlRfyfKvNASParLpteVGNjNjNjVGsUTQnsfFMqlynaKziIQCpEpECEpEpEFqEpEpEpFqEpFqrHon
+hhZweIUCdMdMprZwlklkIBUJDUgBSoaQyfjSRfXKcwaQaIaILpLpkGNjwFgRVGhyTQnsfFaEsWnaKzMoPHonpExwpEonononononononononon
 hhZwbvUCbKFCHPweMGYdtDEbEbEbVZaQRfRfRfhUYvaQpNvTLpLpAVNjFoVsVGvDcXnsjIqwcBnaKzAPQConDQonononDQonononDQonononDQ
 hhZwOFdCYrTrHBZwlklkWlyMnhUWgFaQDlfyRfKCcwaQvqvqLpmTVGNjNjVvVGqYWqnsqwDvsqnaKzxTPHonononononononononononononon
 hhACZwCOljiyNLMxEKfmSHhnhnhnvhNAJvyfRfdQQLNAgOaSLpYkVGNJqNCvVGDNWqnsqwjTlynaKziIQCKZonononKZqnThThThvwkKvwqFon
