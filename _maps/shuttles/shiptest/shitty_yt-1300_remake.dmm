@@ -1,0 +1,41 @@
+"a" = (/turf/open/space/basic,/area/space)
+"e" = (/turf/open/floor/plasteel,/area/space)
+"p" = (/turf/closed/wall/mineral/titanium,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaappaaaappaaaaaaaaa
+aaaaaaaaappaaaappaaaaaaaaa
+aaaaaaaapppaaaapppaaaaaaaa
+aaaaaaaapppaaaapppaaaaaaaa
+aaaaaaappppaaaappppaaaaaaa
+aaaaaaappppaaaappppaaaaaaa
+aaaaaappppppppppppppappppa
+aaaaaapppppeeeepppppppaapp
+aaaaappppppeeeeppppppaaaap
+aaaaappppppeeeeppppppaaaap
+aaaappppaapeeeepeepppaaaap
+aaappaaaaaeeeeeeeeeepaaaap
+aaappaaaaappppppeeeppaaapp
+aapppaaaaaaaaapeeeppaaappa
+aaaaaaaaaaaaaappeppaaappaa
+aaaaaaaaaaaaaaapppaaappaaa
+aaaaaaaaaaaaaaaaaaaappaaaa
+aaaaaaaaaaaaaaaaaaappaaaaa
+aaaaaaaaaaaaaaaaaappaaaaaa
+aaaaaaaaaaaaaaaaappaaaaaaa
+aaaaaaaaaaaaaaaappaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+"}
