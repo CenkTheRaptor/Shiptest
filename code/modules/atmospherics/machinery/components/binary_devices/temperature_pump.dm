@@ -1,5 +1,5 @@
 /obj/machinery/atmospherics/components/binary/temperature_pump
-	icon_state = "tpump_map-3"
+	icon_state = "tpump_on_map-3"
 	name = "temperature pump"
 	desc = "A pump that moves heat from one pipeline to another. The input will get cooler, and the output will get hotter."
 
@@ -31,7 +31,7 @@
 /obj/machinery/atmospherics/components/binary/temperature_pump/update_icon_nopipes()
 	icon_state = "tpump_[on && is_operational ? "on" : "off"]-[set_overlay_offset(piping_layer)]"
 
-/obj/machinery/atmospherics/components/binary/temperature_pump/process_atmos()
+/obj/machinery/atmospherics/components/binary/temperature_pump/process_atmos(seconds_per_tick)
 
 	if(!on || !is_operational)
 		return

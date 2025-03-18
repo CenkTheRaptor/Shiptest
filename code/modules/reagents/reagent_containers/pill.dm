@@ -1,7 +1,7 @@
 /obj/item/reagent_containers/pill
 	name = "pill"
 	desc = "A tablet or capsule."
-	icon = 'icons/obj/chemical.dmi'
+	icon = 'icons/obj/chemical/medicine.dmi'
 	icon_state = "pill"
 	item_state = "pill"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
@@ -34,20 +34,20 @@
 	if(M == user)
 		M.visible_message("<span class='notice'>[user] attempts to [apply_method] [src].</span>")
 		if(self_delay)
-			if(!do_mob(user, M, self_delay))
+			if(!do_after(user, self_delay, M))
 				return FALSE
 		to_chat(M, "<span class='notice'>You [apply_method] [src].</span>")
 
 	else
 		M.visible_message("<span class='danger'>[user] attempts to force [M] to [apply_method] [src].</span>", \
 							"<span class='userdanger'>[user] attempts to force you to [apply_method] [src].</span>")
-		if(!do_mob(user, M))
+		if(!do_after(user, target = M))
 			return FALSE
 		M.visible_message("<span class='danger'>[user] forces [M] to [apply_method] [src].</span>", \
 							"<span class='userdanger'>[user] forces you to [apply_method] [src].</span>")
 
 	if(icon_state == "pill4" && prob(5)) //you take the red pill - you stay in Wonderland, and I show you how deep the rabbit hole goes
-		addtimer(CALLBACK(GLOBAL_PROC, PROC_REF(to_chat), M, "<span class='notice'>[pick(strings(REDPILL_FILE, "redpill_questions"))]</span>"), 50)
+		addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(to_chat), M, "<span class='notice'>[pick(strings(REDPILL_FILE, "redpill_questions"))]</span>"), 50)
 
 	if(reagents.total_volume)
 		reagents.trans_to(M, reagents.total_volume, transfered_by = user, method = apply_type)
@@ -94,10 +94,16 @@
 
 /obj/item/reagent_containers/pill/morphine
 	name = "morphine pill"
-	desc = "Commonly used to treat insomnia."
+	desc = "Commonly used to treat pain and restlessness."
 	icon_state = "pill8"
-	list_reagents = list(/datum/reagent/medicine/morphine = 30)
+	list_reagents = list(/datum/reagent/medicine/morphine = 10)
 	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/pill/tramal
+	name = "tramal pill"
+	desc = "Commonly used to treat insomnia."
+	icon_state = "pill9"
+	list_reagents = list(/datum/reagent/medicine/tramal = 10)
 
 /obj/item/reagent_containers/pill/stimulant
 	name = "stimulant pill"
@@ -182,13 +188,19 @@
 	icon_state = "pill22"
 	rename_with_volume = TRUE
 
-///////////////////////////////////////// this pill is used only in a legion mob drop
-/obj/item/reagent_containers/pill/shadowtoxin
-	name = "black pill"
-	desc = "I wouldn't eat this if I were you."
-	icon_state = "pill9"
-	color = "#454545"
-	list_reagents = list(/datum/reagent/mutationtoxin/shadow = 5)
+/obj/item/reagent_containers/pill/licarb
+	name = "lithium carbonate pill"
+	desc = "Used to treat depression."
+	list_reagents = list(/datum/reagent/medicine/lithium_carbonate = 10)
+	icon_state = "pill22"
+	rename_with_volume = TRUE
+
+/obj/item/reagent_containers/pill/hsh
+	name = "HSH pill"
+	desc = "A pill of Human Sleep Hormone."
+	list_reagents = list(/datum/reagent/medicine/melatonin = 10)
+	icon_state = "pill22"
+	rename_with_volume = TRUE
 
 ///////////////////////////////////////// Psychologist inventory pills
 /obj/item/reagent_containers/pill/happinesspsych
@@ -268,6 +280,12 @@
 	icon_state = "pill21"
 	list_reagents = list(/datum/reagent/three_eye = 25)
 
+/obj/item/reagent_containers/pill/finobranc
+	name = "finobranc tablet"
+	desc = "In an ideal world, you'd be snorting this. We don't live in an ideal world."
+	icon_state = "pill18"
+	list_reagents = list(/datum/reagent/drug/finobranc = 5)
+
 /*WS Begin - No Cobbychem
 
 /obj/item/reagent_containers/pill/c2/probital
@@ -293,8 +311,20 @@ WS End */
 	list_reagents = list(/datum/reagent/medicine/trophazole = 15)
 	rename_with_volume = TRUE
 
+/obj/item/reagent_containers/pill/stardrop
+	name = "stardrop capsule"
+	desc = "A capsule of a vision enhancing compound known as Stardrop."
+	icon_state = "pill11"
+	list_reagents = list(/datum/reagent/drug/stardrop = 15)
+
+/obj/item/reagent_containers/pill/starlight
+	name = "starlight capsule"
+	desc = "A capsule of a night-vision inducing compound known as Starlight."
+	icon_state = "pill11"
+	list_reagents = list(/datum/reagent/drug/stardrop/starlight = 10)
+
 /obj/item/reagent_containers/spray/rhigoxane
 	name = "medical spray (rhigoxane)"
 	desc = "A medical spray bottle.This one contains rhigoxane, it is used to treat burns and cool down temperature if applied with spray."
-	icon_state = "sprayer_large"
+	icon_state = "sprayer"
 	list_reagents = list(/datum/reagent/medicine/rhigoxane = 100)

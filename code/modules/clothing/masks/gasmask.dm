@@ -8,8 +8,16 @@
 	item_state = "gas_alt"
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
-	flags_cover = MASKCOVERSEYES | MASKCOVERSMOUTH | PEPPERPROOF
+	flags_cover = MASKCOVERSEYES | MASKCOVERSMOUTH | PEPPERPROOF | SEALS_EYES
 	resistance_flags = NONE
+
+	equip_sound = 'sound/items/equip/armor_equip.ogg'
+	equipping_sound = EQUIP_SOUND_VFAST_GENERIC
+	unequipping_sound = UNEQUIP_SOUND_VFAST_GENERIC
+	equip_delay_self = EQUIP_DELAY_MASK
+	equip_delay_other = EQUIP_DELAY_MASK * 1.5
+	strip_delay = EQUIP_DELAY_MASK * 1.5
+	equip_self_flags = EQUIP_ALLOW_MOVEMENT | EQUIP_SLOWDOWN
 
 /obj/item/clothing/mask/gas/atmos
 	name = "atmospheric gas mask"
@@ -80,6 +88,7 @@
 	strip_delay = 60
 
 /obj/item/clothing/mask/gas/syndicate/voicechanger
+	desc = "A close-fitting tactical mask that can be connected to an air supply. This one has an integrated voice changer."
 	var/voice_change = 1
 
 /obj/item/clothing/mask/gas/clown_hat
@@ -273,3 +282,11 @@
 	item_state = "hunter"
 	resistance_flags = FIRE_PROOF | ACID_PROOF
 	flags_inv = HIDEFACIALHAIR|HIDEFACE|HIDEEYES|HIDEEARS|HIDEHAIR
+
+/obj/item/clothing/mask/gas/inteq
+	name = "Inteq gas mask"
+	desc = "A protective gas mask refit for Inteq's standards. It features a modified scratch resistant visor, ports for connecting an oxygen supply, and secure, comfortable straps."
+	icon_state = "inteq_gas_mask"
+	item_state = "inteq_gas_mask"
+	resistance_flags = FIRE_PROOF | ACID_PROOF
+	supports_variations = KEPORI_VARIATION | VOX_VARIATION

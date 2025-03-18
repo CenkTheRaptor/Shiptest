@@ -37,19 +37,19 @@
 	lose_text = "<span class='danger'>You no longer feel like drinking would ease your pain.</span>"
 	medical_record_text = "Patient has unusually efficient liver metabolism and can slowly regenerate wounds by drinking alcoholic beverages."
 
-/datum/quirk/drunkhealing/on_process()
+/datum/quirk/drunkhealing/on_process(seconds_per_tick)
 	var/mob/living/carbon/C = quirk_holder
 	// Whitesands Start - Prevent Prosthetic healing from liquor
 	switch(C.drunkenness)
 		if (6 to 40)
-			C.adjustBruteLoss(-0.1, FALSE, FALSE, BODYTYPE_ORGANIC)
-			C.adjustFireLoss(-0.05, FALSE, FALSE, BODYTYPE_ORGANIC)
+			C.adjustBruteLoss(-0.1*seconds_per_tick, FALSE, FALSE, BODYTYPE_ORGANIC)
+			C.adjustFireLoss(-0.05*seconds_per_tick, FALSE, FALSE, BODYTYPE_ORGANIC)
 		if (41 to 60)
-			C.adjustBruteLoss(-0.4, FALSE, FALSE, BODYTYPE_ORGANIC)
-			C.adjustFireLoss(-0.2, FALSE, FALSE, BODYTYPE_ORGANIC)
+			C.adjustBruteLoss(-0.4*seconds_per_tick, FALSE, FALSE, BODYTYPE_ORGANIC)
+			C.adjustFireLoss(-0.2*seconds_per_tick, FALSE, FALSE, BODYTYPE_ORGANIC)
 		if (61 to INFINITY)
-			C.adjustBruteLoss(-0.8, FALSE, FALSE, BODYTYPE_ORGANIC)
-			C.adjustFireLoss(-0.4, FALSE, FALSE, BODYTYPE_ORGANIC)
+			C.adjustBruteLoss(-0.8*seconds_per_tick, FALSE, FALSE, BODYTYPE_ORGANIC)
+			C.adjustFireLoss(-0.4*seconds_per_tick, FALSE, FALSE, BODYTYPE_ORGANIC)
 	// Whitesands End - Prevent Prosthetic healing from liquor
 
 /datum/quirk/empath
@@ -61,26 +61,6 @@
 	gain_text = "<span class='notice'>You feel in tune with those around you.</span>"
 	lose_text = "<span class='danger'>You feel isolated from others.</span>"
 	medical_record_text = "Patient is highly perceptive of and sensitive to social cues, or may possibly have ESP. Further testing needed."
-
-/datum/quirk/fan_clown
-	name = "Clown Fan"
-	desc = "You enjoy clown antics and get a mood boost from wearing your clown pin."
-	value = 1
-	mob_traits = list(TRAIT_FAN_CLOWN)
-	gain_text = "<span class='notice'>You are a big fan of clowns.</span>"
-	lose_text = "<span class='danger'>The clown doesn't seem so great.</span>"
-	medical_record_text = "Patient reports being a big fan of clowns."
-
-/datum/quirk/fan_clown/on_spawn()
-	var/mob/living/carbon/human/H = quirk_holder
-	var/obj/item/clothing/accessory/fan_clown_pin/B = new(get_turf(H))
-	var/list/slots = list (
-		"backpack" = ITEM_SLOT_BACKPACK,
-		"hands" = ITEM_SLOT_HANDS,
-	)
-	H.equip_in_one_of_slots(B, slots , qdel_on_fail = TRUE)
-	var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
-	fan.add_hud_to(H)
 
 /datum/quirk/fan_rilena
 	name = "RILENA Super Fan"
@@ -94,26 +74,6 @@
 /datum/quirk/fan_rilena/on_spawn()
 	var/mob/living/carbon/human/H = quirk_holder
 	var/obj/item/clothing/accessory/rilena_pin/B = new(get_turf(H))
-	var/list/slots = list (
-		"backpack" = ITEM_SLOT_BACKPACK,
-		"hands" = ITEM_SLOT_HANDS,
-	)
-	H.equip_in_one_of_slots(B, slots , qdel_on_fail = TRUE)
-	var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
-	fan.add_hud_to(H)
-
-/datum/quirk/fan_mime
-	name = "Mime Fan"
-	desc = "You enjoy mime antics and get a mood boost from wearing your mime pin."
-	value = 1
-	mob_traits = list(TRAIT_FAN_MIME)
-	gain_text = "<span class='notice'>You are a big fan of the Mime.</span>"
-	lose_text = "<span class='danger'>The mime doesn't seem so great.</span>"
-	medical_record_text = "Patient reports being a big fan of mimes."
-
-/datum/quirk/fan_mime/on_spawn()
-	var/mob/living/carbon/human/H = quirk_holder
-	var/obj/item/clothing/accessory/fan_mime_pin/B = new(get_turf(H))
 	var/list/slots = list (
 		"backpack" = ITEM_SLOT_BACKPACK,
 		"hands" = ITEM_SLOT_HANDS,
@@ -149,8 +109,8 @@
 	mood_quirk = TRUE
 	medical_record_text = "Patient demonstrates constant euthymia irregular for environment. It's a bit much, to be honest."
 
-/datum/quirk/jolly/on_process()
-	if(prob(0.05))
+/datum/quirk/jolly/on_process(seconds_per_tick)
+	if(SPT_PROB(0.05, seconds_per_tick))
 		SEND_SIGNAL(quirk_holder, COMSIG_ADD_MOOD_EVENT, "jolly", /datum/mood_event/jolly)
 
 /datum/quirk/light_step
@@ -247,19 +207,6 @@
 	mob_traits = list(TRAIT_SKITTISH)
 	medical_record_text = "Patient demonstrates a high aversion to danger and has described hiding in containers out of fear."
 
-/datum/quirk/spiritual
-	name = "Spiritual"
-	desc = "You hold a spiritual belief, whether in God, nature or the arcane rules of the universe. You gain comfort from the presence of holy people, and believe that your prayers are more special than others."
-	value = 1
-	mob_traits = list(TRAIT_SPIRITUAL)
-	gain_text = "<span class='notice'>You have faith in a higher power.</span>"
-	lose_text = "<span class='danger'>You lose faith!</span>"
-	medical_record_text = "Patient reports a belief in a higher power."
-
-/datum/quirk/spiritual/on_spawn()
-	var/mob/living/carbon/human/H = quirk_holder
-	H.equip_to_slot_or_del(new /obj/item/storage/fancy/candle_box(H), ITEM_SLOT_BACKPACK)
-	H.equip_to_slot_or_del(new /obj/item/storage/box/matches(H), ITEM_SLOT_BACKPACK)
 
 /datum/quirk/tagger
 	name = "Tagger"

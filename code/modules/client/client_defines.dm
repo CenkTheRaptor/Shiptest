@@ -150,15 +150,14 @@
 	/// our current tab
 	var/stat_tab
 
-	/// whether our browser is ready or not yet
-	var/statbrowser_ready = FALSE
-
 	/// list of all tabs
 	var/list/panel_tabs = list()
 	/// list of tabs containing spells and abilities
 	var/list/spell_tabs = list()
 	///A lazy list of atoms we've examined in the last EXAMINE_MORE_TIME (default 1.5) seconds, so that we will call [atom/proc/examine_more()] instead of [atom/proc/examine()] on them when examining
 	var/list/recent_examines
+	///Our object window datum. It stores info about and handles behavior for the object tab
+	var/datum/object_window_info/obj_window
 
 	var/list/parallax_layers
 	var/list/parallax_layers_cached
@@ -191,7 +190,7 @@
 	var/next_move_dir_sub
 
 	/// If the client is currently under the restrictions of the interview system
-	var/interviewee = FALSE
+	var/interviewee = TRUE
 
 	/// Used by SSserver_maint to detect if a client is newly AFK.
 	var/last_seen_afk = 0

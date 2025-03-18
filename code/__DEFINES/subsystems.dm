@@ -120,7 +120,10 @@
 #define INIT_ORDER_EVENTS 70
 #define INIT_ORDER_JOBS 65
 #define INIT_ORDER_QUIRKS 60
+#define INIT_ORDER_AI_MOVEMENT 57 //We need the movement setup
+#define INIT_ORDER_AI_CONTROLLERS 56 //So the controller can get the ref
 #define INIT_ORDER_TICKER 55
+#define INIT_ORDER_FACTION 53
 #define INIT_ORDER_MAPPING 50
 #define INIT_ORDER_TIMETRACK 47
 #define INIT_ORDER_NETWORKS 45
@@ -129,6 +132,7 @@
 #define INIT_ORDER_ATOMS 30
 #define INIT_ORDER_LANGUAGE 25
 #define INIT_ORDER_MACHINES 20
+#define INIT_ORDER_TURRETS 17
 #define INIT_ORDER_SKILLS 15
 #define INIT_ORDER_TIMER 1
 #define INIT_ORDER_DEFAULT 0
@@ -162,6 +166,8 @@
 #define FIRE_PRIORITY_WET_FLOORS 20
 #define FIRE_PRIORITY_AIR 20
 #define FIRE_PRIORITY_NPC 20
+#define FIRE_PRIORITY_NPC_MOVEMENT 21
+#define FIRE_PRIORITY_NPC_ACTIONS 22
 #define FIRE_PRIORITY_PROCESS 25
 #define FIRE_PRIORITY_THROWING 25
 #define FIRE_PRIORITY_SPACEDRIFT 30
@@ -174,9 +180,11 @@
 #define FIRE_PRIORITY_PARALLAX 65
 #define FIRE_PRIORITY_INSTRUMENTS 80
 #define FIRE_PRIORITY_MOBS 100
+#define FIRE_PRIORITY_MOVABLE_PHYSICS 105
 #define FIRE_PRIORITY_TGUI 110
 #define FIRE_PRIORITY_TICKER 200
 #define FIRE_PRIORITY_ATMOS_ADJACENCY 300
+#define FIRE_PRIORITY_STATPANEL 390
 #define FIRE_PRIORITY_CHAT 400
 #define FIRE_PRIORITY_RUNECHAT 410
 #define FIRE_PRIORITY_MOUSE_ENTERED 450
@@ -233,27 +241,22 @@
 #define SSEXPLOSIONS_TURFS 2
 #define SSEXPLOSIONS_THROWS 3
 
-//! ## Overlays subsystem
+// Vote subsystem counting methods
+/// First past the post. One selection per person, and the selection with the most votes wins.
+#define VOTE_COUNT_METHOD_SINGLE 1
+/// Approval voting. Any number of selections per person, and the selection with the most votes wins.
+#define VOTE_COUNT_METHOD_MULTI 2
 
-///Compile all the overlays for an atom from the cache lists
-// |= on overlays is not actually guaranteed to not add same appearances but we're optimistically using it anyway.
-#define COMPILE_OVERLAYS(A) \
-	do{ \
-		var/list/ad = A.add_overlays; \
-		var/list/rm = A.remove_overlays; \
-		if(LAZYLEN(rm)){ \
-			A.overlays -= rm; \
-			rm.Cut(); \
-		} \
-		if(LAZYLEN(ad)){ \
-			A.overlays |= ad; \
-			ad.Cut(); \
-		} \
-		for(var/I in A.alternate_appearances){ \
-			var/datum/atom_hud/alternate_appearance/AA = A.alternate_appearances[I]; \
-			if(AA.transfer_overlays){ \
-				AA.copy_overlays(A, TRUE); \
-			} \
-		} \
-		A.flags_1 &= ~OVERLAY_QUEUED_1; \
-	}while(FALSE)
+/// The choice with the most votes wins. Ties are broken by the first choice to reach that number of votes.
+#define VOTE_WINNER_METHOD_SIMPLE "Simple"
+/// The winning choice is selected randomly based on the number of votes each choice has.
+#define VOTE_WINNER_METHOD_WEIGHTED_RANDOM "Weighted Random"
+/// There is no winner for this vote.
+#define VOTE_WINNER_METHOD_NONE "None"
+
+// Subsystem delta times or tickrates, in seconds. I.e, how many seconds in between each process() call for objects being processed by that subsystem.
+// Only use these defines if you want to access some other objects processing seconds_per_tick, otherwise use the seconds_per_tick that is sent as a parameter to process()
+#define SSFLUIDS_DT (SSfluids.wait/10)
+#define SSMACHINES_DT (SSmachines.wait/10)
+#define SSMOBS_DT (SSmobs.wait/10)
+#define SSOBJ_DT (SSobj.wait/10)

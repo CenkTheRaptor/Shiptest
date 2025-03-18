@@ -49,7 +49,7 @@
 		STOP_PROCESSING(SSfastprocess, src)
 	update_appearance()
 
-/obj/item/pinpointer/process()
+/obj/item/pinpointer/process(seconds_per_tick)
 	if(!active)
 		return PROCESS_KILL
 	if(process_scan)
@@ -63,7 +63,7 @@
 	. = ..()
 	if(!active)
 		return
-	if(!target)
+	if(!target?.loc)
 		. += "pinon[alert ? "alert" : ""]null[icon_suffix]"
 		return
 	var/turf/here = get_turf(src)

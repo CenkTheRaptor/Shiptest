@@ -7,7 +7,6 @@
 	name = "\proper space"
 	intact = 0
 
-	initial_temperature = TCMB
 	thermal_conductivity = 0
 	heat_capacity = 700000
 	initial_gas_mix = AIRLESS_ATMOS
@@ -40,7 +39,7 @@
 	if(!space_gas)
 		space_gas = new
 	air = space_gas
-	update_air_ref(0)
+	update_air_ref(AIR_REF_SPACE_TURF)
 	vis_contents.Cut() //removes inherited overlays
 	visibilityChanged()
 

@@ -5,7 +5,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	//doohickeys for savefiles
 	var/path
 	var/default_slot = 1				//Holder so it doesn't default to slot 1, rather the last one used
-	var/max_save_slots = 20
+	var/max_save_slots = 30
 
 	//non-preference stuff
 	var/muted = 0
@@ -17,7 +17,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/ooccolor = "#c43b23"
 	var/asaycolor = "#ff4500"			//This won't change the color for current admins, only incoming ones.
 	/// If we spawn an ERT as an admin and choose to spawn as the briefing officer, we'll be given this outfit
-	var/brief_outfit = /datum/outfit/centcom/commander
+	var/brief_outfit = /datum/outfit/job/nanotrasen/captain
 	var/enable_tips = TRUE
 	var/tip_delay = 500 //tip delay in milliseconds
 
@@ -48,7 +48,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/tgui_fancy = TRUE
 	var/tgui_lock = FALSE
 	var/windowflashing = TRUE
-	var/crew_objectives = TRUE
 	var/toggles = TOGGLES_DEFAULT
 	var/db_flags
 	var/chat_toggles = TOGGLES_DEFAULT_CHAT
@@ -112,11 +111,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							"squid_face" = "Squidward",
 							"ipc_screen" = "Blue",
 							"ipc_antenna" = "None",
+							"ipc_tail" = "None",
 							"ipc_chassis" = "Morpheus Cyberkinetics (Custom)",
 							"ipc_brain" = "Posibrain",
-							"kepori_feathers" = "Plain",
-							"kepori_body_feathers" = "Plain",
-							"kepori_tail_feathers" = "Fan",
+							"kepori_feathers" = "None",
+							"kepori_body_feathers" = "None",
+							"kepori_head_feathers" = "None",
+							"kepori_tail_feathers" = "None",
 							"vox_head_quills" = "Plain",
 							"vox_neck_quills" = "Plain",
 							"elzu_horns" = "None",
@@ -154,11 +155,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						)
 	var/fbp = FALSE
 	var/phobia = "spiders"
+	var/preferred_smoke_brand = PREF_CIG_SPACE
 	var/list/alt_titles_preferences = list()
 	var/list/custom_names = list()
 	var/preferred_ai_core_display = "Blue"
 	var/prefered_security_department = SEC_DEPT_RANDOM
-
+	var/generic_adjective = "Unremarkable"
 	//Quirk list
 	var/list/all_quirks = list()
 
@@ -213,6 +215,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	///The outfit we currently want to preview on our character
 	var/datum/outfit/job/selected_outfit
 
+	///Someone thought we were nice! We get a little heart in OOC until we join the server past the below time (we can keep it until the end of the round otherwise)
+	var/hearted
+	///
+	var/hearted_until
+
+
+
 /datum/preferences/New(client/C)
 	parent = C
 
@@ -225,7 +234,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			load_path(C.ckey)
 			unlock_content = C.IsByondMember()
 			if(unlock_content)
-				max_save_slots = 30
+				max_save_slots = 50
 	var/loaded_preferences_successfully = load_preferences()
 	if(loaded_preferences_successfully)
 		if(load_character())
@@ -243,7 +252,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	return
 
 #define APPEARANCE_CATEGORY_COLUMN "<td valign='top' width='14%'>"
-#define MAX_MUTANT_ROWS 4
+#define MAX_MUTANT_ROWS 5
 
 /datum/preferences/proc/ShowChoices(mob/user)
 	show_loadout = (current_tab != 1) ? show_loadout : FALSE
@@ -425,9 +434,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "<span style='border: 1px solid #161616; background-color: #[features["mcolor"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=mutant_color;task=input'>Change</a><BR>"
 			dat += "<span style='border: 1px solid #161616; background-color: #[features["mcolor2"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=mutant_color_2;task=input'>Change</a><BR>"
 
-			if(istype(pref_species, /datum/species/ethereal)) //not the best thing to do tbf but I dont know whats better.
+			if(istype(pref_species, /datum/species/elzuose)) //not the best thing to do tbf but I dont know whats better.
 
-				dat += "<h3>Ethereal Color</h3>"
+				dat += "<h3>Elzuosa Color</h3>"
 
 				dat += "<span style='border: 1px solid #161616; background-color: #[features["ethcolor"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=color_ethereal;task=input'>Change</a><BR>"
 
@@ -675,6 +684,19 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</td>"
 					mutant_category = 0
 
+			if("ipc_tail" in pref_species.default_features)
+				if(!mutant_category)
+					dat += APPEARANCE_CATEGORY_COLUMN
+
+				dat += "<h3>Tail Style</h3>"
+
+				dat += "<a href='?_src_=prefs;preference=ipc_tail;task=input'>[features["ipc_tail"]]</a><BR>"
+
+				mutant_category++
+				if(mutant_category >= MAX_MUTANT_ROWS)
+					dat += "</td>"
+					mutant_category = 0
+
 			if("ipc_chassis" in pref_species.default_features)
 				if(!mutant_category)
 					dat += APPEARANCE_CATEGORY_COLUMN
@@ -708,6 +730,19 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				dat += "<a href='?_src_=prefs;preference=kepori_feathers;task=input'>[features["kepori_feathers"]]</a><BR>"
 				dat += "<span style='border:1px solid #161616; background-color: #[hair_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=hair;task=input'>Change</a><BR>"
 				dat += "<a href='?_src_=prefs;preference=toggle_random;random_type=[RANDOM_HAIR_COLOR]'>[(randomise[RANDOM_HAIR_COLOR]) ? "Lock" : "Unlock"]</A><BR>"
+
+				mutant_category++
+				if(mutant_category >= MAX_MUTANT_ROWS)
+					dat += "</td>"
+					mutant_category = 0
+
+			if("kepori_head_feathers" in pref_species.default_features)
+				if(!mutant_category)
+					dat += APPEARANCE_CATEGORY_COLUMN
+
+				dat += "<h3>Head Feathers</h3>"
+				dat += "<a href='?_src_=prefs;preference=kepori_head_feathers;task=input'>[features["kepori_head_feathers"]]</a><BR>"
+				dat += "<span style='border:1px solid #161616; background-color: #[features["mcolor2"]];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=mutant_color_2;task=input'>Change</a><BR>"
 
 				mutant_category++
 				if(mutant_category >= MAX_MUTANT_ROWS)
@@ -822,9 +857,21 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 			//Adds a thing to select which phobia because I can't be assed to put that in the quirks window
 			if("Phobia" in all_quirks)
+				if(!mutant_category)
+					dat += APPEARANCE_CATEGORY_COLUMN
 				dat += "<h3>Phobia</h3>"
 
 				dat += "<a href='?_src_=prefs;preference=phobia;task=input'>[phobia]</a><BR>"
+
+				mutant_category++
+				if(mutant_category >= MAX_MUTANT_ROWS)
+					dat += "</td>"
+					mutant_category = 0
+
+			if("Smoker" in all_quirks)
+				dat += "<h3>Smoker</h3>"
+
+				dat += "<a href='?_src_=prefs;preference=preferred_smoke_brand;task=input'>[preferred_smoke_brand]</a><BR>"
 
 			if("body_size" in pref_species.default_features)
 				if(!mutant_category)
@@ -839,7 +886,21 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</td>"
 					mutant_category = 0
 
-			if("wings" in pref_species.default_features && GLOB.r_wings_list.len >1)
+			// begin generic adjective
+			if(!mutant_category)
+				dat += APPEARANCE_CATEGORY_COLUMN
+
+			dat += "<h3>Character Adjective</h3>"
+
+			dat += "<a href='?_src_=prefs;preference=generic_adjective;task=input'>[generic_adjective]</a><BR>"
+
+			mutant_category++
+			if(mutant_category >= MAX_MUTANT_ROWS)
+				dat += "</td>"
+				mutant_category = 0
+			// end generic adjective
+
+			if(("wings" in pref_species.default_features) && GLOB.r_wings_list.len >1)
 				if(!mutant_category)
 					dat += APPEARANCE_CATEGORY_COLUMN
 
@@ -1081,6 +1142,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				if(unlock_content || check_rights_for(user.client, R_ADMIN) || custom_ooc)
 					dat += "<b>OOC Color:</b> <span style='border: 1px solid #161616; background-color: [ooccolor ? ooccolor : GLOB.normal_ooc_colour];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=ooccolor;task=input'>Change</a><br>"
 
+				if(hearted_until)
+					dat += "<a href='?_src_=prefs;preference=clear_heart'>Clear OOC Commend Heart</a><br>"
+
 			dat += "</td>"
 
 			if(user.client.holder)
@@ -1098,7 +1162,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				dat += "<b>Hide Radio Messages:</b> <a href = '?_src_=prefs;preference=toggle_radio_chatter'>[(chat_toggles & CHAT_RADIO)?"Shown":"Hidden"]</a><br>"
 				dat += "<b>Hide Prayers:</b> <a href = '?_src_=prefs;preference=toggle_prayers'>[(chat_toggles & CHAT_PRAYER)?"Shown":"Hidden"]</a><br>"
 				dat += "<b>Split Admin Tabs:</b> <a href = '?_src_=prefs;preference=toggle_split_admin_tabs'>[(toggles & SPLIT_ADMIN_TABS)?"Enabled":"Disabled"]</a><br>"
-				dat += "<b>Ignore Being Summoned as Cult Ghost:</b> <a href = '?_src_=prefs;preference=toggle_ignore_cult_ghost'>[(toggles & ADMIN_IGNORE_CULT_GHOST)?"Don't Allow Being Summoned":"Allow Being Summoned"]</a><br>"
+				dat += "<b>Fast MC Refresh:</b> <a href = '?_src_=prefs;preference=toggle_fast_mc_refresh'>[(toggles & FAST_MC_REFRESH)?"Enabled":"Disabled"]</a><br>"
 				dat += "<b>Briefing Officer Outfit:</b> <a href = '?_src_=prefs;preference=briefoutfit;task=input'>[brief_outfit]</a><br>"
 				if(CONFIG_GET(flag/allow_admin_asaycolor))
 					dat += "<br>"
@@ -1226,7 +1290,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	if(!SSmapping)
 		return
 
-	var/datum/map_template/shuttle/ship = SSmapping.ship_purchase_list[tgui_input_list(user, "Please select which ship to preview outfits for.", "Outfit selection", SSmapping.ship_purchase_list)]
+	var/ship_selection = tgui_input_list(user, "Please select which ship to preview outfits for.", "Outfit selection", (list("None") + SSmapping.ship_purchase_list))
+	if(ship_selection == "None")
+		selected_outfit = new /datum/outfit //The base type outfit is nude
+
+	var/datum/map_template/shuttle/ship = SSmapping.ship_purchase_list[ship_selection]
 	if(!ship)
 		return
 
@@ -1376,7 +1444,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		balance -= initial(quirk_type.value)
 		switch(change_type)
 			if("species")
-				if((quirk_name in SSquirks.species_blacklist) && (pref_species.id in SSquirks.species_blacklist[quirk_name]))
+				if((quirk_name in SSquirks.species_blacklist) && (target_species.id in SSquirks.species_blacklist[quirk_name]))
 					all_quirks_new -= quirk_name
 					balance += initial(quirk_type.value)
 			if("mood")
@@ -1647,9 +1715,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						age = clamp(round(text2num(new_age)), pref_species.species_age_min, pref_species.species_age_max)
 
 				if("flavor_text")
-					var/msg = sanitize(stripped_multiline_input(usr, "Set the flavor text in your 'examine' verb. This can also be used for OOC notes and preferences!", "Flavor Text", features["flavor_text"], 4096, TRUE))
+					var/msg = stripped_multiline_input(usr, "A snippet of text shown when others examine you, describing what you may look like. This can also be used for OOC notes.", "Flavor Text", html_decode(features["flavor_text"]), MAX_FLAVOR_LEN, TRUE)
 					if(msg) //WS edit - "Cancel" does not clear flavor text
-						features["flavor_text"] = html_decode(msg)
+						features["flavor_text"] = msg
 
 				if("hair")
 					var/new_hair = input(user, "Choose your character's hair colour:", "Character Preference","#"+hair_color) as color|null
@@ -1798,7 +1866,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							to_chat(user, "<span class='danger'>Invalid color. Your color is not bright enough.</span>")
 
 				if("color_ethereal")
-					var/new_etherealcolor = input(user, "Choose your elzuosa color:", "Character Preference","#"+features["ethcolor"]) as color|null
+					var/new_etherealcolor = input(user, "Choose your elzuose color:", "Character Preference","#"+features["ethcolor"]) as color|null
 					if(new_etherealcolor)
 						var/temp_hsv = RGBtoHSV(new_etherealcolor)
 						if(ReadHSV(temp_hsv)[3] >= ReadHSV("#505050")[3]) // elzu colors should be bright
@@ -1913,6 +1981,14 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(new_ipc_antenna)
 						features["ipc_antenna"] = new_ipc_antenna
 
+				if("ipc_tail")
+					var/new_ipc_tail
+
+					new_ipc_tail = input(user, "Choose your character's tail:", "Character Preference") as null|anything in GLOB.ipc_tail_list
+
+					if(new_ipc_tail)
+						features["ipc_tail"] = new_ipc_tail
+
 				if("ipc_chassis")
 					var/new_ipc_chassis
 
@@ -1932,6 +2008,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					new_kepori_feathers = input(user, "Choose your character's plumage type:", "Character Preference") as null|anything in GLOB.kepori_feathers_list
 					if (new_kepori_feathers)
 						features["kepori_feathers"] = new_kepori_feathers
+
+				if("kepori_head_feathers")
+					var/new_kepori_feathers
+					new_kepori_feathers = input(user, "Choose your character's head feathers:", "Character Preference") as null|anything in GLOB.kepori_head_feathers_list
+					if (new_kepori_feathers)
+						features["kepori_head_feathers"] = new_kepori_feathers
 
 				if("kepori_body_feathers")
 					var/new_kepori_feathers
@@ -2047,6 +2129,19 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					var/phobiaType = input(user, "What are you scared of?", "Character Preference", phobia) as null|anything in SStraumas.phobia_types
 					if(phobiaType)
 						phobia = phobiaType
+				if("preferred_smoke_brand")
+					var/smokeBrand = input(user, "What cigarettes are your favorite?", "Character Preference", preferred_smoke_brand) as null|anything in GLOB.valid_smoke_types
+					if(smokeBrand)
+						preferred_smoke_brand = smokeBrand
+
+				if("generic_adjective")
+					var/selectAdj
+					if(istype(pref_species, /datum/species/ipc))
+						selectAdj = input(user, "In one word, how would you describe your character's appereance?", "Character Preference", generic_adjective) as null|anything in GLOB.ipc_preference_adjectives
+					else
+						selectAdj = input(user, "In one word, how would you describe your character's appereance?", "Character Preference", generic_adjective) as null|anything in GLOB.preference_adjectives
+					if(selectAdj)
+						generic_adjective = selectAdj
 
 				if ("max_chat_length")
 					var/desiredlength = input(user, "Choose the max character length of shown Runechat messages. Valid range is 1 to [CHAT_MESSAGE_MAX_LENGTH] (default: [initial(max_chat_length)]))", "Character Preference", max_chat_length)  as null|num
@@ -2193,6 +2288,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					user.client.toggle_hear_radio()
 				if("toggle_split_admin_tabs")
 					toggles ^= SPLIT_ADMIN_TABS
+				if("toggle_fast_mc_refresh")
+					toggles ^= FAST_MC_REFRESH
 				if("toggle_prayers")
 					user.client.toggleprayers()
 				if("toggle_deadmin_always")
@@ -2205,8 +2302,6 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					toggles ^= DEADMIN_POSITION_SECURITY
 				if("toggle_deadmin_silicon")
 					toggles ^= DEADMIN_POSITION_SILICON
-				if("toggle_ignore_cult_ghost")
-					toggles ^= ADMIN_IGNORE_CULT_GHOST
 
 				if("be_special")
 					var/be_special_type = href_list["be_special_type"]
@@ -2345,6 +2440,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						if(current_tab == 2)
 							show_loadout = TRUE
 
+				if("clear_heart")
+					hearted = FALSE
+					hearted_until = null
+					to_chat(user, "<span class='notice'>OOC Commendation Heart disabled</span>")
+					save_preferences()
+
+
 	ShowChoices(user)
 	return 1
 
@@ -2445,6 +2547,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 		character.set_species(chosen_species, icon_update = FALSE, pref_load = TRUE)
 	//Because of how set_species replaces all bodyparts with new ones, hair needs to be set AFTER species.
 	character.dna.real_name = character.real_name
+	character.generic_adjective = generic_adjective
 	character.hair_color = hair_color
 	character.facial_hair_color = facial_hair_color
 	character.grad_color = features["grad_color"]
@@ -2464,20 +2567,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 /datum/preferences/proc/get_default_name(name_id)
 	switch(name_id)
-		if("human")
-			return random_unique_name()
 		if("ai")
 			return pick(GLOB.ai_names)
 		if("cyborg")
 			return DEFAULT_CYBORG_NAME
-		if("clown")
-			return pick(GLOB.clown_names)
-		if("mime")
-			return pick(GLOB.mime_names)
-		if("religion")
-			return DEFAULT_RELIGION
-		if("deity")
-			return DEFAULT_DEITY
 	return random_unique_name()
 
 /datum/preferences/proc/ask_for_custom_name(mob/user,name_id)

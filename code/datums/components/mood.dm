@@ -27,6 +27,7 @@
 	RegisterSignal(parent, COMSIG_JOB_RECEIVED, PROC_REF(register_job_signals))
 
 	var/mob/living/owner = parent
+	owner.become_area_sensitive(MOOD_COMPONENT_TRAIT)
 	if(owner.hud_used)
 		modify_hud()
 		var/datum/hud/hud = owner.hud_used
@@ -35,6 +36,9 @@
 /datum/component/mood/Destroy()
 	STOP_PROCESSING(SSmood, src)
 	unmodify_hud()
+
+	var/mob/living/owner = parent
+	owner.lose_area_sensitivity(MOOD_COMPONENT_TRAIT)
 	return ..()
 
 /datum/component/mood/proc/register_job_signals(datum/source, job)
@@ -85,10 +89,10 @@
 	if(mood_events.len)
 		for(var/i in mood_events)
 			var/datum/mood_event/event = mood_events[i]
-			msg += event.description
+			msg += "[event.description]\n" // now we dont have to put \n in every moodlet description
 	else
 		msg += "<span class='nicegreen'>I don't have much of a reaction to anything right now.</span>\n"
-	to_chat(user, examine_block(msg))
+	to_chat(user, boxed_message(msg))
 
 ///Called after moodevent/s have been added/removed.
 /datum/component/mood/proc/update_mood()
@@ -170,26 +174,26 @@
 			break
 
 ///Called on SSmood process
-/datum/component/mood/process()
+/datum/component/mood/process(seconds_per_tick)
 	switch(mood_level)
 		if(1)
-			setSanity(sanity-0.3, SANITY_INSANE)
+			setSanity(sanity-0.3*seconds_per_tick, SANITY_INSANE)
 		if(2)
-			setSanity(sanity-0.15, SANITY_INSANE)
+			setSanity(sanity-0.15*seconds_per_tick, SANITY_INSANE)
 		if(3)
-			setSanity(sanity-0.1, SANITY_CRAZY)
+			setSanity(sanity-0.1*seconds_per_tick, SANITY_CRAZY)
 		if(4)
-			setSanity(sanity-0.05, SANITY_UNSTABLE)
+			setSanity(sanity-0.05*seconds_per_tick, SANITY_UNSTABLE)
 		if(5)
 			setSanity(sanity, SANITY_UNSTABLE) //This makes sure that mood gets increased should you be below the minimum.
 		if(6)
-			setSanity(sanity+0.2, SANITY_UNSTABLE)
+			setSanity(sanity+0.2*seconds_per_tick, SANITY_UNSTABLE)
 		if(7)
-			setSanity(sanity+0.3, SANITY_UNSTABLE)
+			setSanity(sanity+0.3*seconds_per_tick, SANITY_UNSTABLE)
 		if(8)
-			setSanity(sanity+0.4, SANITY_NEUTRAL, SANITY_MAXIMUM)
+			setSanity(sanity+0.4*seconds_per_tick, SANITY_NEUTRAL, SANITY_MAXIMUM)
 		if(9)
-			setSanity(sanity+0.6, SANITY_NEUTRAL, SANITY_MAXIMUM)
+			setSanity(sanity+0.6*seconds_per_tick, SANITY_NEUTRAL, SANITY_MAXIMUM)
 	HandleNutrition()
 
 ///Sets sanity to the specified amount and applies effects.
@@ -317,7 +321,7 @@
 
 /datum/component/mood/proc/HandleNutrition()
 	var/mob/living/L = parent
-	if(isethereal(L))
+	if(iselzuose(L))
 		HandleCharge(L)
 	if(HAS_TRAIT(L, TRAIT_NOHUNGER))
 		return FALSE //no mood events for nutrition
@@ -334,19 +338,19 @@
 			add_event(null, "nutrition", /datum/mood_event/starving)
 
 /datum/component/mood/proc/HandleCharge(mob/living/carbon/human/H)
-	var/datum/species/ethereal/E = H.dna.species
+	var/datum/species/elzuose/E = H.dna.species
 	switch(E.get_charge(H))
-		if(ETHEREAL_CHARGE_NONE to ETHEREAL_CHARGE_LOWPOWER)
+		if(ELZUOSE_CHARGE_NONE to ELZUOSE_CHARGE_LOWPOWER)
 			add_event(null, "charge", /datum/mood_event/decharged)
-		if(ETHEREAL_CHARGE_LOWPOWER to ETHEREAL_CHARGE_NORMAL)
+		if(ELZUOSE_CHARGE_LOWPOWER to ELZUOSE_CHARGE_NORMAL)
 			add_event(null, "charge", /datum/mood_event/lowpower)
-		if(ETHEREAL_CHARGE_NORMAL to ETHEREAL_CHARGE_ALMOSTFULL)
+		if(ELZUOSE_CHARGE_NORMAL to ELZUOSE_CHARGE_ALMOSTFULL)
 			clear_event(null, "charge")
-		if(ETHEREAL_CHARGE_ALMOSTFULL to ETHEREAL_CHARGE_FULL)
+		if(ELZUOSE_CHARGE_ALMOSTFULL to ELZUOSE_CHARGE_FULL)
 			add_event(null, "charge", /datum/mood_event/charged)
-		if(ETHEREAL_CHARGE_FULL to ETHEREAL_CHARGE_OVERLOAD)
+		if(ELZUOSE_CHARGE_FULL to ELZUOSE_CHARGE_OVERLOAD)
 			add_event(null, "charge", /datum/mood_event/overcharged)
-		if(ETHEREAL_CHARGE_OVERLOAD to ETHEREAL_CHARGE_DANGEROUS)
+		if(ELZUOSE_CHARGE_OVERLOAD to ELZUOSE_CHARGE_DANGEROUS)
 			add_event(null, "charge", /datum/mood_event/supercharged)
 
 /datum/component/mood/proc/check_area_mood(datum/source, area/A)

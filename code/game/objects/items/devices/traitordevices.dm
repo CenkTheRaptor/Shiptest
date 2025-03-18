@@ -185,7 +185,7 @@ effective or pretty fucking useless.
 	name = "cloaker belt"
 	desc = "Makes you invisible for short periods of time. Recharges in darkness."
 	icon = 'icons/obj/clothing/belts.dmi'
-	icon_state = "utilitybelt"
+	icon_state = "utility"
 	item_state = "utility"
 	slot_flags = ITEM_SLOT_BELT
 	attack_verb = list("whipped", "lashed", "disciplined")
@@ -231,7 +231,7 @@ effective or pretty fucking useless.
 	if(user && user.get_item_by_slot(ITEM_SLOT_BELT) != src)
 		Deactivate()
 
-/obj/item/shadowcloak/process()
+/obj/item/shadowcloak/process(seconds_per_tick)
 	if(user.get_item_by_slot(ITEM_SLOT_BELT) != src)
 		Deactivate()
 		return
@@ -239,9 +239,9 @@ effective or pretty fucking useless.
 	if(on)
 		var/lumcount = T.get_lumcount()
 		if(lumcount > 0.3)
-			charge = max(0,charge - 25)//Quick decrease in light
+			charge = max(0, charge - 12.5 * seconds_per_tick)//Quick decrease in light
 		else
-			charge = min(max_charge,charge + 50) //Charge in the dark
+			charge = min(max_charge, charge + 25 * seconds_per_tick) //Charge in the dark
 		animate(user,alpha = clamp(255 - charge,0,255),time = 10)
 
 

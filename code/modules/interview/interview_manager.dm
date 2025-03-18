@@ -18,7 +18,7 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
 	/// Ckeys which are currently in the cooldown system, they will be unable to create new interviews
 	var/list/cooldown_ckeys = list()
 
-/datum/interview_manager/Destroy(force, ...)
+/datum/interview_manager/Destroy(force)
 	QDEL_LIST(open_interviews)
 	QDEL_LIST(interview_queue)
 	QDEL_LIST(closed_interviews)
@@ -109,7 +109,7 @@ GLOBAL_DATUM_INIT(interviews, /datum/interview_manager, new)
 		if(X.prefs.toggles & SOUND_ADMINHELP)
 			SEND_SOUND(X, sound('sound/effects/adminhelp.ogg'))
 		window_flash(X, ignorepref = TRUE)
-		to_chat(X, "<span class='adminhelp'>Interview for [ckey] enqueued for review. Current position in queue: [to_queue.pos_in_queue]</span>", confidential = TRUE)
+		to_chat(X, "<span class='adminhelp'>[to_queue.link_self()] for [ckey] enqueued for review. Current position in queue: [to_queue.pos_in_queue]</span>", confidential = TRUE)
 
 /**
  * Removes a ckey from the cooldown list, used for enforcing cooldown after an interview is denied.

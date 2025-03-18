@@ -39,7 +39,7 @@
 	name = "canvas"
 	desc = "Draw out your soul on this canvas!"
 	icon = 'icons/obj/artstuff.dmi'
-	icon_state = "square"
+	icon_state = "11x11"
 	resistance_flags = FLAMMABLE
 	var/width = 11
 	var/height = 11
@@ -220,16 +220,16 @@
 /obj/item/wallframe/painting
 	name = "painting frame"
 	desc = "The perfect showcase for your favorite deathtrap memories."
-	icon = 'icons/obj/decals.dmi'
+	icon = 'icons/obj/structures/signs/sign.dmi'
 	custom_materials = null
 	flags_1 = 0
 	icon_state = "frame-empty"
-	result_path = /obj/structure/sign/painting
+	result_path = /obj/structure/sign/painting/library
 
 /obj/structure/sign/painting
 	name = "Painting"
 	desc = "Art or \"Art\"? You decide."
-	icon = 'icons/obj/decals.dmi'
+	icon = 'icons/obj/structures/signs/sign.dmi'
 	icon_state = "frame-empty"
 	var/obj/item/canvas/C
 	var/persistence_id = "general"
@@ -241,8 +241,8 @@
 	if(dir)
 		setDir(dir)
 	if(building)
-		pixel_x = (dir & 3)? 0 : (dir == 4 ? -30 : 30)
-		pixel_y = (dir & 3)? (dir ==1 ? -30 : 30) : 0
+		pixel_x = (dir & 3)? 0 : (dir == 4 ? 30 : -30)
+		pixel_y = (dir & 3)? (dir ==1 ? 30 : -30) : 0
 	//The painting is being loaded by the maploader and SSpersistence has already run. Load a painting ourselves.
 	if(mapload && SSpersistence.initialized)
 		load_persistent()

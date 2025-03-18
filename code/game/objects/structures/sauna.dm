@@ -1,4 +1,4 @@
-#define SAUNA_H2O_TEMP T20C + 60
+#define SAUNA_H2O_TEMP T20C + 30
 #define SAUNA_LOG_FUEL 150
 #define SAUNA_MAXIMUM_FUEL 3000
 #define SAUNA_WATER_PER_WATER_UNIT 5
@@ -66,7 +66,7 @@
 		to_chat(user, "<span class='notice'>You begin to deconstruct [src].</span>")
 		if(T.use_tool(src, user, 60, volume=50))
 			to_chat(user, "<span class='notice'>You successfully deconstructed [src].</span>")
-			new /obj/item/stack/sheet/mineral/wood(get_turf(src), 30)
+			new /obj/item/stack/sheet/mineral/wood(get_turf(src), 15)
 			qdel(src)
 
 	else if(istype(T, /obj/item/stack/sheet/mineral/wood))
@@ -81,7 +81,7 @@
 			some fuel to [src].</span>")
 	return ..()
 
-/obj/structure/sauna_oven/process()
+/obj/structure/sauna_oven/process(seconds_per_tick)
 	if(water_amount)
 		var/used_amount = min(water_amount / 10, 20)
 		water_amount -= used_amount

@@ -30,23 +30,11 @@ SUBSYSTEM_DEF(shuttle)
 
 	/// Whether express consoles are blocked from ordering anything or not
 	var/supplyBlocked = FALSE
-	/// Order number given to next cargo order
-	var/ordernum = 1
-	/// List of all singleton supply pack instances
-	var/list/supply_packs = list()
 
 	/// Stops ALL shuttles from being able to move
 	var/lockdown = FALSE
 
 /datum/controller/subsystem/shuttle/Initialize(timeofday)
-	ordernum = rand(1, 9000)
-
-	for(var/pack in subtypesof(/datum/supply_pack))
-		var/datum/supply_pack/P = new pack()
-		if(!P.contains)
-			continue
-		supply_packs[P.type] = P
-
 	for(var/obj/docking_port/stationary/stationary_port as anything in stationary)
 		stationary_port.load_roundstart()
 		CHECK_TICK
@@ -91,6 +79,8 @@ SUBSYSTEM_DEF(shuttle)
 
 	jump_timer = addtimer(VARSET_CALLBACK(src, jump_mode, BS_JUMP_COMPLETED), jump_completion_time, TIMER_STOPPABLE)
 	priority_announce("Jump initiated. ETA: [jump_completion_time / (1 MINUTES)] minutes.", null, null, "Priority")
+
+	INVOKE_ASYNC(SSticker, TYPE_PROC_REF(/datum/controller/subsystem/ticker,poll_hearts))
 
 /datum/controller/subsystem/shuttle/proc/request_transit_dock(obj/docking_port/mobile/M)
 	if(!istype(M))
@@ -150,7 +140,7 @@ SUBSYSTEM_DEF(shuttle)
 
 	mapzone.parallax_movedir = travel_dir
 
-	var/area/shuttle/transit/transit_area = new()
+	var/area/hyperspace/transit_area = new()
 
 	vlevel.fill_in(transit_path, transit_area)
 
@@ -193,10 +183,7 @@ SUBSYSTEM_DEF(shuttle)
 		transit_requesters = SSshuttle.transit_requesters
 	if (istype(SSshuttle.transit_request_failures))
 		transit_request_failures = SSshuttle.transit_request_failures
-	if (istype(SSshuttle.supply_packs))
-		supply_packs = SSshuttle.supply_packs
 
-	ordernum = SSshuttle.ordernum
 	lockdown = SSshuttle.lockdown
 
 /datum/controller/subsystem/shuttle/proc/is_in_shuttle_bounds(atom/A)
@@ -490,7 +477,7 @@ SUBSYSTEM_DEF(shuttle)
 					user.forceMove(new_ship.get_jump_to_turf())
 					message_admins("[key_name_admin(user)] loaded [new_ship] ([S]) with the shuttle manipulator.")
 					log_admin("[key_name(user)] loaded [new_ship] ([S]) with the shuttle manipulator.</span>")
-					SSblackbox.record_feedback("text", "shuttle_manipulator", 1, "[S]")
+					SSblackbox.record_feedback("tally", "shuttle_manipulator_spawned", 1, "[S]")
 
 		if("edit_template")
 			if(S)
@@ -534,6 +521,32 @@ SUBSYSTEM_DEF(shuttle)
 				return
 			if(user.client)
 				user.client.debug_variables(port.current_ship)
+			return TRUE
+
+		if("blist")
+			var/obj/docking_port/mobile/port = locate(params["id"]) in mobile
+			if(!port || !port.current_ship)
+				return
+			var/datum/overmap/ship/controlled/port_ship = port.current_ship
+			var/temp_loc = input(user, "Select outpost to modify ship blacklist status for", "Get Em Outta Here") as null|anything in SSovermap.outposts
+			if(!temp_loc)
+				return
+			var/datum/overmap/outpost/please_leave = temp_loc
+			if(please_leave in port_ship.blacklisted)
+				if(tgui_alert(user, "Rescind ship blacklist?", "Maybe They Aren't So Bad", list("Yes", "No")) == "Yes")
+					port_ship.blacklisted &= ~please_leave
+					message_admins("[key_name_admin(user)] unblocked [port_ship] from [please_leave].")
+					log_admin("[key_name_admin(user)] unblocked [port_ship] from [please_leave].")
+				return TRUE
+			var/reason = input(user, "Provide a reason for blacklisting, which will be displayed on docking attempts", "Bar Them From The Pearly Gates", "Contact local law enforcement for more information.") as null|text
+			if(!reason)
+				return TRUE
+			if(please_leave in port_ship.blacklisted) //in the event two admins are blacklisting a ship at the same time
+				if(tgui_alert(user, "Ship is already blacklisted, overwrite current reason with your own?", "I call the shots here", list("Yes", "No")) != "Yes")
+					return TRUE
+			port_ship.blacklisted[please_leave] = reason
+			message_admins("[key_name_admin(user)] blacklisted [port_ship] from landing at [please_leave] with reason: [reason]")
+			log_admin("[key_name_admin(user)] blacklisted [port_ship] from landing at [please_leave] with reason: [reason]")
 			return TRUE
 
 		if("fly")
