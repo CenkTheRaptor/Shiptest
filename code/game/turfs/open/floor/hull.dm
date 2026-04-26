@@ -7,7 +7,7 @@
 
 /turf/open/floor/engine/hull/rcd_act(mob/user, obj/item/construction/rcd/the_rcd, passed_mode) //no rcd destroying this flooring
 	if(passed_mode == RCD_DECONSTRUCT)
-		to_chat(user, "<span class='warning'>The flooring is too thick to be regularly deconstructed!</span>")
+		to_chat(user, span_warning("The flooring is too thick to be regularly deconstructed!"))
 		return FALSE
 	return ..()
 
@@ -24,3 +24,12 @@
 /turf/open/floor/engine/hull/reinforced/interior
 	name = "interior reinforced hull plating"
 	initial_gas_mix = OPENTURF_DEFAULT_ATMOS
+
+/turf/open/floor/engine/hull/reinforced/beach
+	initial_gas_mix = BEACHPLANET_DEFAULT_ATMOS
+
+/turf/open/floor/engine/hull/reinforced/beach/lit
+	light_range = 2
+	light_power = 0.80
+	light_color = COLOR_BEACHPLANET_LIGHT
+

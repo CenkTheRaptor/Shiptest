@@ -5,13 +5,6 @@
 
 	ruin_type = RUINTYPE_ROCK
 
-/datum/map_template/ruin/rockplanet/budgetcuts
-	name = "Budgetcuts"
-	description = "Nanotrasen's gotta lay off some personnel, and this facility hasn't been worth the effort so far"
-	id = "rockplanet_budgetcuts"
-	suffix = "rockplanet_budgetcuts.dmm"
-	ruin_tags = list(RUIN_TAG_HARD_COMBAT, RUIN_TAG_MEDIUM_LOOT, RUIN_TAG_LIVEABLE)
-
 /datum/map_template/ruin/rockplanet/shippingdock
 	name = "Abandoned Shipping Dock"
 	description = "An abandoned shipping dock used by small cargo freighters and smugglers alike. Some malicious group seems to have trapped the place to eliminate scavengers."
@@ -20,9 +13,10 @@
 
 /datum/map_template/ruin/rockplanet/distillery
 	name = "Frontiersman Distillery"
-	description = "A former pre-ICW era Nanotrasen outpost converted into a moonshine distillery by Frontiersman bootleggers."
+	description = "A former pre-ICW era Makosso-Warra outpost converted into a moonshine distillery by Frontiersman bootleggers."
 	id = "rockplanet_distillery"
 	suffix = "rockplanet_distillery.dmm"
+
 
 /datum/map_template/ruin/rockplanet/mining_base
 	name = "N+S Mining Installation"
@@ -36,3 +30,15 @@
 	description = "A crashed Ramzi Clique vessel that has since become an isolated pirate outpost."
 	id = "rockplanet_rustbase"
 	suffix = "rockplanet_rustbase.dmm"
+
+/datum/map_template/ruin/rockplanet/river_valley_stash
+	name = "River Valley Stash"
+	description = "A frontiersman drug stash in the midst of being buried."
+	id = "rockplanet_river_valley_stash"
+	suffix = "rockplanet_river_valley_stash.dmm"
+
+/datum/map_template/ruin/rockplanet/somme
+	name = "Frontiersman Trench Complex"
+	description = "Frontiersmen have dug in like ticks to the planet's surface."
+	id = "rockplanet_somme"
+	suffix = "rockplanet_somme.dmm"

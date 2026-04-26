@@ -5,9 +5,9 @@
 	ruin_type = RUINTYPE_JUNGLE
 
 /datum/map_template/ruin/jungle/syndicate
-	name = "Jungle Syndicate Bunker"
+	name = "Jungle ICW-era Bunker"
 	id = "syndicatebunkerjungle"
-	description = "A small bunker owned by the Syndicate."
+	description = "An ICW-era nuclear bunker formerly operated by the Gorlex Marauders, now inhabited by the Ramzi Clique."
 	suffix = "jungle_syndicate.dmm"
 	ruin_tags = list(RUIN_TAG_MEDIUM_COMBAT, RUIN_TAG_MEDIUM_LOOT, RUIN_TAG_LIVEABLE)
 
@@ -32,16 +32,16 @@
 	suffix = "jungle_bombed_starport.dmm"
 	ruin_tags = list(RUIN_TAG_HARD_COMBAT, RUIN_TAG_MAJOR_LOOT, RUIN_TAG_HAZARDOUS, RUIN_TAG_LIVEABLE)
 
-/datum/map_template/ruin/jungle/medtech
-	name = "MedTech facility"
-	id = "medtech-facility"
-	description = "A MedTech pharmaceutical manufacturing plant where something went terribly wrong."
-	suffix = "jungle_medtech_outbreak.dmm"
-	ruin_tags = list(RUIN_TAG_MEDIUM_COMBAT, RUIN_TAG_MEDIUM_LOOT, RUIN_TAG_LIVEABLE)
-
 /datum/map_template/ruin/jungle/cavecrew
 	name = "Frontiersmen Cave"
 	id = "cavecrew"
 	description = "A frontiersmen base, hidden within a cave. They don't seem friendly"
 	suffix = "jungle_cavecrew.dmm"
 	ruin_tags = list(RUIN_TAG_MEDIUM_COMBAT, RUIN_TAG_HAZARDOUS, RUIN_TAG_LIVEABLE, RUIN_TAG_MAJOR_LOOT)
+
+/datum/map_template/ruin/jungle/serene_hunts
+	name = "Serene Hunts"
+	id = "serene-hunts"
+	description = "Serene Outdoor's premier hunting resort and outlet. Well, it was until all the animals got out anyways."
+	suffix = "jungle_serene_hunts.dmm"
+	ruin_tags = list(RUIN_TAG_BOSS_COMBAT, RUIN_TAG_MEDIUM_LOOT, RUIN_TAG_LIVEABLE, RUIN_TAG_HAZARDOUS)

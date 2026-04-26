@@ -5,7 +5,7 @@
 	quality = POSITIVE
 	locked = TRUE
 	difficulty = 16
-	text_gain_indication = "<span class='notice'>Your muscles hurt!</span>"
+	text_gain_indication = span_notice("Your muscles hurt!")
 	species_allowed = list(SPECIES_HUMAN) //no skeleton/lizard hulk
 	health_req = 25
 	instability = 40
@@ -20,6 +20,7 @@
 	ADD_TRAIT(owner, TRAIT_PUSHIMMUNE, GENETIC_MUTATION)
 	ADD_TRAIT(owner, TRAIT_CHUNKYFINGERS, GENETIC_MUTATION)
 	ADD_TRAIT(owner, TRAIT_IGNOREDAMAGESLOWDOWN, GENETIC_MUTATION)
+	ADD_TRAIT(owner, TRAIT_GENEMODDED, GENETIC_MUTATION)
 	ADD_TRAIT(owner, TRAIT_HULK, GENETIC_MUTATION)
 	owner.update_body_parts()
 	SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "hulk", /datum/mood_event/hulk)
@@ -48,7 +49,7 @@
 /datum/mutation/human/hulk/on_life()
 	if(owner.health < 0)
 		on_losing(owner)
-		to_chat(owner, "<span class='danger'>You suddenly feel very weak.</span>")
+		to_chat(owner, span_danger("You suddenly feel very weak."))
 
 /datum/mutation/human/hulk/on_losing(mob/living/carbon/human/owner)
 	if(..())
@@ -57,6 +58,7 @@
 	REMOVE_TRAIT(owner, TRAIT_PUSHIMMUNE, GENETIC_MUTATION)
 	REMOVE_TRAIT(owner, TRAIT_CHUNKYFINGERS, GENETIC_MUTATION)
 	REMOVE_TRAIT(owner, TRAIT_IGNOREDAMAGESLOWDOWN, GENETIC_MUTATION)
+	REMOVE_TRAIT(owner, TRAIT_GENEMODDED, GENETIC_MUTATION)
 	REMOVE_TRAIT(owner, TRAIT_HULK, GENETIC_MUTATION)
 	owner.update_body_parts()
 	SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, "hulk")

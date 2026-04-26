@@ -27,9 +27,9 @@
 	icon_state = "folder_syndie"
 
 /obj/item/folder/documents
-	var/document = /obj/item/documents/nanotrasen
+	var/document = /obj/item/documents/warra
 	name = "folder- 'TOP SECRET'"
-	desc = "A folder stamped \"Top Secret - Property of Nanotrasen Corporation. Unauthorized distribution is punishable by death.\""
+	desc = "A folder stamped \"Top Secret - Property of Makosso-Warra Corporation. Unauthorized distribution is punishable by death.\""
 
 /obj/item/folder/documents/Initialize()
 	. = ..()
@@ -74,6 +74,12 @@
 	document = /obj/item/documents/terragov
 	desc = "A green folder with a Terran Regency seal."
 	icon_state = "folder_terragovred"
+
+/obj/item/folder/documents/eoehoma
+	document = /obj/item/documents/eoehoma
+	icon_state = "folder_blue"
+	name = "folder"
+	desc = "A blue folder."
 
 /obj/item/folder/suns
 	desc = "A purple folder with a SUNS seal."

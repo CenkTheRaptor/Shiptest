@@ -47,9 +47,6 @@
 	var/jumpsuit_style = PREF_SUIT		//suit/skirt
 	var/exowear = PREF_EXOWEAR			//exowear
 
-	///Whether this human started with a full-body prosthesis
-	var/fbp = FALSE
-
 	//Equipment slots
 	var/obj/item/clothing/wear_suit = null
 	var/obj/item/clothing/w_uniform = null
@@ -62,7 +59,9 @@
 
 	/// Adjective used in get_generic_name(), if any
 	var/generic_adjective
-	var/bleedsuppress = 0 //for stopping bloodloss body-wide
+
+	///For stopping bloodloss
+	var/bleedsuppress = 0
 
 	var/name_override //For temporary visible name changes
 
@@ -72,7 +71,6 @@
 
 	var/static/list/can_ride_typecache = typecacheof(list(/mob/living/carbon/human, /mob/living/simple_animal/slime, /mob/living/simple_animal/parrot))
 	var/lastpuke = 0
-	var/last_fire_update
 	var/account_id
 
 	/// How many "units of blood" we have on our hands
@@ -81,3 +79,9 @@
 	var/obj/effect/abstract/particle_holder/blood_particle
 
 	COOLDOWN_DECLARE(bloodloss_message)
+
+	/// Height of the mob
+	VAR_PROTECTED/mob_height = HUMAN_HEIGHT_MEDIUM
+
+	/// Pronouns of the mob
+	var/pronouns = null // all pronoun stuff is for players and will read gender for pronouns if this is null
